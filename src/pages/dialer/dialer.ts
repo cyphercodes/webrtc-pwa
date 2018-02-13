@@ -1,6 +1,7 @@
 import {Component, ViewChild} from '@angular/core';
 import {NavController} from 'ionic-angular';
 import sip from 'sip.js';
+import {DeviceTools} from "../../common/tools/device-tools/device-tools";
 
 @Component({
   selector: 'page-dialer',
@@ -11,7 +12,7 @@ export class DialerPage {
   @ViewChild('tel') tel;
   enterCount: number = 0;
 
-  constructor(public navCtrl: NavController) {
+  constructor(public navCtrl: NavController, private deviceTools: DeviceTools) {
   }
 
   ionViewDidEnter() {
@@ -25,10 +26,20 @@ export class DialerPage {
   }
 
   ionViewDidLoad() {
-
+    let audioElement: any = document.getElementById('remoteAudio');
     console.log('just loaded...');
     navigator.mediaDevices.enumerateDevices().then((devices) => {
       console.log(devices);
+      let filtered = devices.filter((device) => {
+        return this.deviceTools.isHeadsetMedia(device) || this.deviceTools.isSpeakerMedia(device);
+      });
+      console.log(devices);
+      console.log(filtered);
+
+      console.log(audioElement);
+      this.attachSinkId(audioElement, 'default');
+      // audioElement.setSinkId(filtered[1].deviceId);
+
     }).catch((error) => {
       console.log('navigator.getUserMedia error: ', error);
     });
@@ -66,7 +77,7 @@ export class DialerPage {
     });
 
     session.on('progress', function () {
-      session.sessionDescriptionHandler.on('addStream', function () {
+      session.sessionDescriptionHandler.on('addStream', () => {
         var pc = session.sessionDescriptionHandler.peerConnection;
         var remoteStream = new MediaStream();
         pc.getReceivers().forEach(function (receiver) {
@@ -75,11 +86,31 @@ export class DialerPage {
             remoteStream.addTrack(track)
           }
         })
-        let audio: any = document.getElementById('remoteAudio');
-        audio.srcObject = remoteStream;
+        audioElement.srcObject = remoteStream;
+        console.log(audioElement);
+        // audioElement.setSinkId('default');
       });
     });
 
+  }
+
+  attachSinkId(element, sinkId) {
+    if (typeof element.sinkId !== 'undefined') {
+      element.setSinkId(sinkId)
+        .then(function () {
+          console.log('Success, audio output device attached: ' + sinkId);
+        })
+        .catch(function (error) {
+          var errorMessage = error;
+          if (error.name === 'SecurityError') {
+            errorMessage = 'You need to use HTTPS for selecting audio output ' +
+              'device: ' + error;
+          }
+          console.error(errorMessage);
+        });
+    } else {
+      console.warn('Browser does not support output device selection.');
+    }
   }
 
 }
