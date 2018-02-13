@@ -15,7 +15,7 @@ export class DialerPage {
   }
 
   ionViewDidEnter() {
-    if (this.enterCount > 1) {
+    if (this.enterCount > 0) {
       setTimeout(() => {
         this.tel.nativeElement.focus();
         this.tel.nativeElement.scrollIntoView();
