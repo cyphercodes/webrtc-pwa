@@ -1,4 +1,4 @@
-import {Component, ViewChild} from '@angular/core';
+import {Component} from '@angular/core';
 import {NavController} from 'ionic-angular';
 
 @Component({
@@ -7,17 +7,9 @@ import {NavController} from 'ionic-angular';
 })
 export class DialerPage {
 
-  @ViewChild('tel') tel;
-
   constructor(public navCtrl: NavController) {
 
   }
 
-  ionViewDidEnter() {
-    setTimeout(() => {
-      this.tel.nativeElement.focus();
-      this.tel.nativeElement.scrollIntoView();
-    }, 300);
-  }
 
 }
