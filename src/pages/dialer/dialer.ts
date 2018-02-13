@@ -57,9 +57,9 @@ export class DialerPage {
     session.on('progress', function () {
       session.sessionDescriptionHandler.on('addStream', function () {
         var pc = session.sessionDescriptionHandler.peerConnection;
-        var remoteStream = new MediaStream()
+        var remoteStream = new MediaStream();
         pc.getReceivers().forEach(function (receiver) {
-          var track = receiver.track
+          var track = receiver.track;
           if (track) {
             remoteStream.addTrack(track)
           }
