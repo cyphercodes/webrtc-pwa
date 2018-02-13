@@ -25,6 +25,14 @@ export class DialerPage {
   }
 
   ionViewDidLoad() {
+
+    console.log('just loaded...');
+    navigator.mediaDevices.enumerateDevices().then((devices) => {
+      console.log(devices);
+    }).catch((error) => {
+      console.log('navigator.getUserMedia error: ', error);
+    });
+
     let config = {
       uri: '199@webrtc.cyphertel.net',
       ws_servers: 'wss://webrtc.cyphertel.net:8089/ws',
@@ -41,6 +49,9 @@ export class DialerPage {
           }
         }
       },
+      log: {
+        builtinEnabled: false
+      }
       // 'extraHeaders': [ 'CallerID: <?= $this->session->userdata('dbuser'); ?>', 'CallerID: <?= $this->session->userdata('dbuser'); ?>'],
     }
     let ua = new sip.UA(config);
