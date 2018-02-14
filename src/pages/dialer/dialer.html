@@ -8,6 +8,12 @@
 
   <div class="dial-input" padding>
     <input type="tel" placeholder="Please enter the number you wish to dial..." #tel/>
-    <video id="remoteAudio" autoplay></video>
+    <button ion-button color="danger" *ngIf="hasSession()" (click)="hangup()">
+      Hangup
+    </button>
+    <button ion-button *ngIf="!hasSession()" (click)="dial()">
+      Dial
+    </button>
+    <audio #audio autoplay></audio>
   </div>
 </ion-content>

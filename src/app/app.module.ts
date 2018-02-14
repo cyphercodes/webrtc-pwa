@@ -1,6 +1,6 @@
-import {NgModule, ErrorHandler} from '@angular/core';
+import {ErrorHandler, NgModule} from '@angular/core';
 import {BrowserModule} from '@angular/platform-browser';
-import {IonicApp, IonicModule, IonicErrorHandler} from 'ionic-angular';
+import {IonicApp, IonicErrorHandler, IonicModule} from 'ionic-angular';
 import {MyApp} from './app.component';
 
 import {AccountPage} from '../pages/account/account';
@@ -9,7 +9,6 @@ import {TabsPage} from '../pages/tabs/tabs';
 
 import {StatusBar} from '@ionic-native/status-bar';
 import {SplashScreen} from '@ionic-native/splash-screen';
-import {DeviceTools} from "../common/tools/device-tools/device-tools";
 
 @NgModule({
   declarations: [
@@ -32,7 +31,6 @@ import {DeviceTools} from "../common/tools/device-tools/device-tools";
   providers: [
     StatusBar,
     SplashScreen,
-    DeviceTools,
     {provide: ErrorHandler, useClass: IonicErrorHandler}
   ]
 })
